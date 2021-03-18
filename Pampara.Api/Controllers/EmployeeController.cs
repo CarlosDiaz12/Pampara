@@ -31,5 +31,11 @@ namespace Pampara.Api.Controllers
             var result = _service.SaveEmployee(employee);
             return CreatedAtAction("Get", new { Id = result.Id }, result);
         }
+
+        //[HttpGet("{Id}")]
+        //public IActionResult Get(int Id)
+        //{
+
+        //}
     }
 }

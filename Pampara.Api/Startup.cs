@@ -20,6 +20,7 @@ namespace Pampara.Api
 {
     public class Startup
     {
+        private readonly string corsPolicy = "myCors";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -33,6 +34,17 @@ namespace Pampara.Api
             services.AddDbContext<ApplicationDbContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("PamparaDB")));
             services.AddScoped<IRepository<Employee>, EmployeeRepository>();
             services.AddScoped<EmployeeService, EmployeeService>();
+            services.AddCors(opts =>
+            {
+                opts.AddPolicy(name: corsPolicy, b =>
+                {
+                    b
+                    .AllowAnyOrigin()
+                    //.WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
             services.AddControllers();
 
         }
@@ -46,7 +58,7 @@ namespace Pampara.Api
             }
 
             app.UseRouting();
-
+            app.UseCors(corsPolicy);
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
