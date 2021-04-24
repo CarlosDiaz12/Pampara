@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Pampara.DataAccess.Util;
+
 namespace Pampara.DataAccess.Repository
 {
     public class EmployeeRepository : IRepository<Employee>
@@ -39,6 +41,13 @@ namespace Pampara.DataAccess.Repository
             return employees;
         }
 
+        public PagedResult<Employee> GetAllPaged(int page, int pageSize)
+        {
+            IQueryable<Employee> employees = _context.Employees.AsQueryable();
+            var result = Pagination<Employee>.GetPagedResultForQuery(employees, page, pageSize);
+            return result;
+        }
+
         public Employee GetById(int Id)
         {
             var employee = _context.Employees.FirstOrDefault(x => x.Id == Id);
@@ -52,5 +61,6 @@ namespace Pampara.DataAccess.Repository
             _context.SaveChanges();
             return employee.Entity;
         }
+
     }
 }

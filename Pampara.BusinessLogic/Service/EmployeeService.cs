@@ -14,9 +14,14 @@ namespace Pampara.BusinessLogic.Service
             _repository = repository;
         }
 
-        public IEnumerable<Employee> GetEmployeeList()
+        //public IEnumerable<Employee> GetEmployeeList()
+        //{
+        //    return _repository.GetAll();
+        //}
+
+        public PagedResult<Employee> GetEmployeeList(int page, int pageSize = 10)
         {
-            return _repository.GetAll();
+            return _repository.GetAllPaged(page, pageSize);
         }
 
         public Employee SaveEmployee(Employee employee)

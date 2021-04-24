@@ -1,20 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Pampara.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
-using Pampara.DataAccess.Interface;
-using Pampara.DataAccess.Model;
-using Pampara.DataAccess.Repository;
-using Pampara.BusinessLogic.Service;
+using Pampara.Api.DependencyInjection;
 
 namespace Pampara.Api
 {
@@ -32,17 +23,20 @@ namespace Pampara.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("PamparaDB")));
-            services.AddScoped<IRepository<Employee>, EmployeeRepository>();
-            services.AddScoped<EmployeeService, EmployeeService>();
+
+            // Inject Services
+            Injection.AddPamparaServices(services);
+
             services.AddCors(opts =>
             {
                 opts.AddPolicy(name: corsPolicy, b =>
                 {
                     b
-                    .AllowAnyOrigin()
-                    //.WithOrigins("http://localhost:4200")
+                    // .AllowAnyOrigin()
+                    .WithOrigins(new string[] { "http://localhost:4200", "http://localhost:5001" })
                     .AllowAnyHeader()
-                    .AllowAnyMethod();
+                    .AllowAnyMethod()
+                    .AllowCredentials();
                 });
             });
             services.AddControllers();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pampara.DataAccess.Model;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,5 +12,6 @@ namespace Pampara.DataAccess.Interface
         public IEnumerable<T> GetAll();
         public void Delete(int Id);
         public T GetById(int Id);
+        public PagedResult<Employee> GetAllPaged(int page, int pageSize);
     }
 }

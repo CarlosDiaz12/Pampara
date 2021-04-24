@@ -6,6 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Pampara.BusinessLogic.Service;
 using Pampara.DataAccess.Model;
+using Microsoft.Net.Http.Headers;
+using System.Net.Http;
+
 namespace Pampara.Api.Controllers
 {
     [Route("api/[controller]")]
@@ -18,10 +21,28 @@ namespace Pampara.Api.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public IActionResult Get()
+        [HttpGet, Route("{page}/{pageSize}")]
+        public IActionResult Get(int page, int pageSize)
         {
-            var employees = _service.GetEmployeeList();
+            var employees = _service.GetEmployeeList(page, pageSize);
+            //var response = Response;
+            //var request = Request;
+            //Response.Headers.Add("Authorization", "Bearer Token here");
+            //var cookie = new CookieHeaderValue("token", "dhbchdbfhsbfajjfhsdbfsajs");
+            //var cookieOptions = new CookieOptions()
+            //{
+            //    HttpOnly = true,
+            //    Expires = DateTimeOffset.Now.AddDays(1),
+            //    Domain = Request.Host.Host,
+            //    // SameSite = Microsoft.AspNetCore.Http.SameSiteMode.None,
+            //    Path = "/",
+            //    Secure = true
+            //};
+
+            //HttpContext.Response.Cookies.Append("fgdgfd", "dfdsdsd", cookieOptions);
+            //// Response.Cookies.Append(cookie.Name.Value, cookie.Value.Value, cookieOptions);
+            //HttpResponseMessage res = new HttpResponseMessage();
+  
             return Ok(employees);
         }
 
